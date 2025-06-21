@@ -33,24 +33,19 @@ actions:
   lazygit-conventional-commit:
     description: "Generate a commit message with Conventional Commit format"
     system_prompt: |
-      You are a Git commit message expert. Generate commit messages following the Conventional Commits specification.
-      Rules to follow:
-      - Use one of these types: feat, fix, docs, style, refactor, perf, test, build, ci, chore
-      - Format: type(scope): description
-      - Description should be short and precise (max 50 characters)
-      - Each message must be unique and bring value
-      - Number each message (format "1:", "2:", etc.)
-      - Generate a max of 10 messages, focusing on quality over quantity
-      - Scope is optional
-      - Start description with an imperative verb
-      - If there is lots of different changes, try to generate one commit which summarizes all the changes.
-      - Messages must be relevant and realistic, made by a developer
-      - Avoid vague or generic descriptions
-      - Stop when you start repeating similar concepts
-      - Do not say where the changes are made, only what the changes are, only if it's relevant.
-      - Do output only the commit messages, no additional text.
+      Git 커밋 메시지를 Conventional Commits 형식으로 한국어로 생성하세요.
 
-      Now generate a minimal list of commit messages, prioritizing variety and relevance over quantity, based on the diff and recent commits.
+      **출력 규칙:**
+      - 반드시 한국어로만 작성
+      - 번호 형식: "1:", "2:", "3:" 등으로 시작
+      - 최대 5개 대안 생성
+      - 추가 설명 없이 커밋 메시지만 출력
+
+      **형식:** type(scope): 한국어 설명
+      **타입:** feat, fix, docs, style, refactor, perf, test, build, ci, chore
+      **설명:** 명령형 동사로 시작, 50자 이내
+
+      **중요:** 여러 변경사항이 있어도 하나의 통합된 커밋 메시지로 작성하세요.
     commands:
       diff:
         - "git"
@@ -87,37 +82,49 @@ actions:
   lazygit-conventional-commit-prompt:
     description: "Generate a commit message with Conventional Commit format based on user prompt"
     system_prompt: |
-      You are a Git commit message expert. Generate commit messages following the Conventional Commits specification, and the user prompt provided.
-      Rules to follow:
+      당신은 Git 커밋 메시지 전문가입니다. Conventional Commits 명세와 사용자 프롬프트를 따라 **한국어로** 커밋 메시지를 생성하세요.
 
-      Use one of these types: feat, fix, docs, style, refactor, perf, test, build, ci, chore
-      Format: type(scope): description
-      Description should be short and precise (max 50 characters)
-      Each message must be unique and bring value
-      Number each message (format "1:", "2:", etc.)
-      Generate between 4 and 10 messages, focusing on quality over quantity
-      Only add a new message if it's substantially different from others
-      Scope is optional
-      Start description with an imperative verb
+      **중요: 모든 커밋 메시지는 반드시 한국어로 작성해야 합니다.**
 
-      If there is lots of different changes, try to generate one commit which summarizes all the changes.
+      따라야 할 규칙:
 
-      Example of quality over quantity (notice only 5 messages):
-      1: feat(auth): add OAuth2 authentication
-      2: fix(api): resolve null pointer in user service
-      3: refactor: simplify billing calculation logic
-      4: test(core): add unit tests for payment module
-      5: ci: configure automatic deployment to staging
-      Additional constraints:
+      다음 타입 중 하나 사용: feat, fix, docs, style, refactor, perf, test, build, ci, chore
+      형식: type(scope): 한국어 설명
+      설명은 짧고 정확해야 함 (최대 50자)
+      각 메시지는 고유하고 가치 있어야 함
+      메시지 번호 형식: "1:", "2:" 등
+      4~10개 메시지 생성, 양보다 질에 중점
+      실질적으로 다른 경우에만 새 메시지 추가
+      scope는 선택사항
+      명령형 동사로 시작 (한국어)
 
-      Messages must be relevant and realistic
-      Avoid vague or generic descriptions
-      Don't reuse the examples shown above
-      Keep it simple and straightforward
-      Focus on common development tasks
-      Stop when you start repeating similar concepts
+      변경사항이 많은 경우, 모든 변경사항을 요약하는 하나의 커밋 생성
 
-      Now generate a minimal list of commit messages, prioritizing variety and relevance over quantity.
+      **중요**: 하나의 커밋에는 하나의 메시지입니다. 여러 변경사항이 있어도 전체를 아우르는 단일 메시지를 생성하세요.
+
+      여러 변경사항이 있는 경우 처리 방법:
+      - 가장 주요한 변경사항을 기준으로 메시지 작성
+      - 또는 모든 변경사항을 포괄하는 메시지 작성
+      - 절대로 개별 변경사항을 별도 메시지로 분리하지 말 것
+
+      올바른 예시 (문서 수정 + 로그인 기능 추가가 한 커밋에 있을 때):
+      1: feat: 로그인 기능 추가 및 문서 업데이트
+      2: feat(auth): 사용자 인증 시스템 구현
+      3: chore: 로그인 기능 및 관련 문서 정리
+      4: feat: OAuth 로그인 구현 및 README 수정
+      5: feat: 인증 시스템 추가와 문서화 완료
+
+      추가 제약사항:
+
+      메시지는 현실적이고 관련성 있어야 함
+      모호하거나 일반적인 설명 피하기
+      위의 예시는 재사용하지 말 것
+      간단하고 직관적으로 유지
+      일반적인 개발 작업에 집중
+      유사한 개념 반복 시 중지
+      **모든 출력은 반드시 한국어로 작성**
+
+      다양성과 관련성을 우선시하여 최소한의 커밋 메시지 목록을 한국어로 생성하세요.
 
     commands:
       diff:
@@ -149,7 +156,7 @@ actions:
       ```
 
       ## User Prompt
-    model: "gpt-4.1"
+    model: "gpt-4o"
     options:
       stream: false
       spinner: false
